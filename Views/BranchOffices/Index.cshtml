@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Cities_States.Models.BranchOffice>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<div class="form-group">
+    @Html.Label("Client", htmlAttributes: new { @class = "control-label" })
+    @Html.DropDownList("ClientID", ViewBag.Clients as SelectList, "Select Client", new { @class = "form-control", id = "clientDropdown" })
+</div>
+
+<p>
+    <a href="@Url.Action("DownloadCompleteClientList", "BranchOffices")" class="btn btn-success">Download Complete Client List</a>
+    <button id="downloadFilteredClientList" class="btn btn-success">Download Filtered Client List</button>
+</p>
+
+<table id="branchTable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Client Name</th>
+            <th>District</th>
+            <th>Branch Address</th>
+            <th>CLRA License Expiry</th>
+            <th>CLRA License Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="branchOfficeList">
+        @Html.Partial("_BranchOfficeList", Model)
+    </tbody>
+</table>
+
+@section scripts {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#branchTable').DataTable();
+
+            $('#clientDropdown').change(function () {
+                var clientId = $(this).val();
+                var url = '@Url.Action("Index", "BranchOffices")' + '?clientId=' + clientId;
+                window.location.href = url;
+            });
+
+            $('#downloadFilteredClientList').click(function () {
+                var clientId = $('#clientDropdown').val();
+                if (clientId) {
+                    var url = '@Url.Action("DownloadFilteredClientList", "BranchOffices")' + '?clientId=' + clientId;
+                    window.location.href = url;
+                } else {
+                    alert("Please select a client to download the filtered list.");
+                }
+            });
+        });
+    </script>
+}

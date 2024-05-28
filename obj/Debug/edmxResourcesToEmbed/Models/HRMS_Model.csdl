@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="hrm_dbModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BranchOffice">
+    <Key>
+      <PropertyRef Name="BranchID" />
+    </Key>
+    <Property Name="BranchID" Type="Int32" Nullable="false" />
+    <Property Name="ClientID" Type="Int32" Nullable="false" />
+    <Property Name="BranchCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="District" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BranchAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsCLRALicenseApplicable" Type="Boolean" Nullable="false" />
+    <Property Name="CLRALicenseExpiry" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__BranchOff__Clien__534D60F1" FromRole="BranchOffices" ToRole="Clients" />
+    <Property Name="CLRALicense" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="Int32" Nullable="false" />
+    <Property Name="ClientName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="BranchOffices" Relationship="Self.FK__BranchOff__Clien__534D60F1" FromRole="Clients" ToRole="BranchOffices" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Clients" FromRole="Clients" ToRole="Employees" />
+  </EntityType>
+  <EntityType Name="District">
+    <Key>
+      <PropertyRef Name="DistrictID" />
+    </Key>
+    <Property Name="DistrictID" Type="Int32" Nullable="false" />
+    <Property Name="DistrictName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="StateID" Type="Int32" />
+    <NavigationProperty Name="state" Relationship="Self.FK__Districts__State__4E88ABD4" FromRole="Districts" ToRole="state" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FathersName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Aadhar" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmergencyContactNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DateOfJoining" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="UAN" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PFNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SalaryBelow21K" Type="Boolean" Nullable="false" />
+    <Property Name="ESINumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="BankAccountNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IFSC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ClientID" Type="Int32" Nullable="false" />
+    <Property Name="BranchCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DateOfDeployment" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Photograph" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Client" Relationship="Self.FK_Employees_Clients" FromRole="Employees" ToRole="Clients" />
+    <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Transferred" Type="Boolean" />
+    <Property Name="ClientName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ClientLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="InactiveStatus" Type="Boolean" />
+    <Property Name="DateOfExit" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="state">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="Int32" Nullable="false" />
+    <Property Name="StateName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__State__4E88ABD4" FromRole="state" ToRole="Districts" />
+  </EntityType>
+  <Association Name="FK__BranchOff__Clien__534D60F1">
+    <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+    <End Role="BranchOffices" Type="Self.BranchOffice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="BranchOffices">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Clients">
+    <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Districts__State__4E88ABD4">
+    <End Role="state" Type="Self.state" Multiplicity="0..1" />
+    <End Role="Districts" Type="Self.District" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="state">
+        <PropertyRef Name="StateID" />
+      </Principal>
+      <Dependent Role="Districts">
+        <PropertyRef Name="StateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="hrm_dbEntities4" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BranchOffices" EntityType="Self.BranchOffice" />
+    <EntitySet Name="Clients" EntityType="Self.Client" />
+    <EntitySet Name="Districts" EntityType="Self.District" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="states" EntityType="Self.state" />
+    <AssociationSet Name="FK__BranchOff__Clien__534D60F1" Association="Self.FK__BranchOff__Clien__534D60F1">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="BranchOffices" EntitySet="BranchOffices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_Clients" Association="Self.FK_Employees_Clients">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Districts__State__4E88ABD4" Association="Self.FK__Districts__State__4E88ABD4">
+      <End Role="state" EntitySet="states" />
+      <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

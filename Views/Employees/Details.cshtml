@@ -1,0 +1,281 @@
+﻿@model Cities_States.Models.Employee
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+<style>
+    .card {
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation-duration: 0.5s;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-title {
+    margin-bottom: 0;
+}
+
+.card-body {
+    patding: 20px;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    patding: 10px 20px;
+}
+
+/* Animation classes */
+.animated {
+    animation-fill-mode: both;
+}
+
+
+.fadeInUp {
+    animation-name: fadeInUp;
+}
+
+
+</style>
+
+<div class="card animated fadeInUp">
+    <div class="card-header">
+        <h4 class="card-title">Employee Details</h4>
+    </div>
+    <div class="card-body">
+        <table class="table">
+
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.FullName)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FathersName)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.FathersName)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Designation)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.Designation)
+                </td>
+
+            </tr>
+
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.DateOfBirth)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.Gender)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PAN)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.PAN)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Aadhar)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.Aadhar)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MobileNumber)
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.MobileNumber)
+                </td>
+            </tr>
+
+            
+            <tr>
+
+
+                <th>
+                    @Html.DisplayNameFor(model => model.EmergencyContactNumber)
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.EmergencyContactNumber)
+                </td>
+            </tr>
+            <tr>
+
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+            </tr>
+
+            <tr>
+
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.Address)
+                </td>
+            </tr>
+
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfJoining)
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.DateOfJoining)
+                </td>
+            </tr>                       
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UAN)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.UAN)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PFNumber)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.PFNumber)
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryBelow21K)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.SalaryBelow21K)
+                </td>
+            </tr>
+
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ESINumber)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.ESINumber)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankAccountNumber)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.BankAccountNumber)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IFSC)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.IFSC)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BranchCode)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.BranchCode)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfDeployment)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.DateOfDeployment)
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Photograph)
+                </th>                
+                <td><img src="@Model.Photograph" alt="Employee Photograph" class="employee-photo" style="max-withh: 200px;" /></td>
+            </tr>
+            
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.ClientName)
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.Client.ClientName)
+                </td>
+            </tr>
+            
+
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-secondary" })
+        </p>
+    </div>
+</div>

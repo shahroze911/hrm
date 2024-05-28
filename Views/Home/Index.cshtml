@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "State and District Dropdowns";
+}
+
+<h2>State and District Dropdowns</h2>
+
+@Html.DropDownList("State", ViewBag.States as SelectList, "Select State", new { @id = "state", @class = "form-control" })
+
+<br />
+
+@Html.DropDownList("District", new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "Select District", new { @id = "district", @class = "form-control" })
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#state").change(function () {
+                loadDistricts();
+            });
+        });
+
+        function loadDistricts() {
+            var stateId = $("#state").val();
+            $("#district").empty();
+            $("#district").append('<option value="">Select District</option>');
+
+            // Fetch districts based on the selected state using AJAX
+            $.ajax({
+                url: '@Url.Action("GetDistrictsByState", "Home")',
+                type: 'GET',
+                data: { stateId: stateId },
+                success: function (result) {
+                    $.each(result, function (index, district) {
+                        $("#district").append('<option value="' + district.DistrictID + '">' + district.DistrictName + '</option>');
+                    });
+                }
+            });
+        }
+    </script>
+}

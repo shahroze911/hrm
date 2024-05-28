@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="hrm_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Districts">
+    <Key>
+      <PropertyRef Name="DistrictID" />
+    </Key>
+    <Property Name="DistrictID" Type="int" Nullable="false" />
+    <Property Name="DistrictName" Type="varchar" MaxLength="100" />
+    <Property Name="StateID" Type="int" />
+  </EntityType>
+  <EntityType Name="state">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="int" Nullable="false" />
+    <Property Name="StateName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Districts__State__4E88ABD4">
+    <End Role="state" Type="Self.state" Multiplicity="0..1" />
+    <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="state">
+        <PropertyRef Name="StateID" />
+      </Principal>
+      <Dependent Role="Districts">
+        <PropertyRef Name="StateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="hrm_dbModelStoreContainer">
+    <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="state" EntityType="Self.state" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Districts__State__4E88ABD4" Association="Self.FK__Districts__State__4E88ABD4">
+      <End Role="state" EntitySet="state" />
+      <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

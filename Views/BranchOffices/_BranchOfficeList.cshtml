@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Cities_States.Models.BranchOffice>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.Client.ClientName)</td>
+        <td>@Html.DisplayFor(modelItem => item.District)</td>
+        <td>@Html.DisplayFor(modelItem => item.BranchAddress)</td>
+        <td>@(item.CLRALicenseExpiry.HasValue ? item.CLRALicenseExpiry.Value.ToString("yyyy-MM-dd") : "No expiry date")</td>
+        <td>
+            @if (!string.IsNullOrEmpty(item.CLRALicense))
+            {
+                <img src="@Url.Content(item.CLRALicense)" alt="CLRA License" style="max-width: 100px; max-height: 100px;" />
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.BranchID }, new { @class = "btn btn-primary btn-sm" }) |
+            @Html.ActionLink("Details", "Details", new { id = item.BranchID }, new { @class = "btn btn-info btn-sm" }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.BranchID }, new { @class = "btn btn-danger btn-sm" })
+        </td>
+    </tr>
+}

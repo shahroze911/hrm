@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="hrm_dbModel2.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BranchOffices">
+    <Key>
+      <PropertyRef Name="BranchID" />
+    </Key>
+    <Property Name="BranchID" Type="int" Nullable="false" />
+    <Property Name="ClientID" Type="int" Nullable="false" />
+    <Property Name="BranchCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="District" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="BranchAddress" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="IsCLRALicenseApplicable" Type="bit" Nullable="false" />
+    <Property Name="CLRALicenseExpiry" Type="date" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="int" Nullable="false" />
+    <Property Name="ClientName" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Districts">
+    <Key>
+      <PropertyRef Name="DistrictID" />
+    </Key>
+    <Property Name="DistrictID" Type="int" Nullable="false" />
+    <Property Name="DistrictName" Type="varchar" MaxLength="100" />
+    <Property Name="StateID" Type="int" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="FathersName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Designation" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="DateOfBirth" Type="date" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="PAN" Type="varchar" MaxLength="10" />
+    <Property Name="Aadhar" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="MobileNumber" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="EmergencyContactNumber" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="DateOfJoining" Type="date" Nullable="false" />
+    <Property Name="UAN" Type="varchar" MaxLength="12" />
+    <Property Name="PFNumber" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="SalaryBelow21K" Type="bit" Nullable="false" />
+    <Property Name="ESINumber" Type="varchar" MaxLength="10" />
+    <Property Name="BankAccountNumber" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IFSC" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ClientID" Type="int" Nullable="false" />
+    <Property Name="BranchCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DateOfDeployment" Type="date" Nullable="false" />
+    <Property Name="Photograph" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="state">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="int" Nullable="false" />
+    <Property Name="StateName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__BranchOff__Clien__534D60F1">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="BranchOffices" Type="Self.BranchOffices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="BranchOffices">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Districts__State__4E88ABD4">
+    <End Role="state" Type="Self.state" Multiplicity="0..1" />
+    <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="state">
+        <PropertyRef Name="StateID" />
+      </Principal>
+      <Dependent Role="Districts">
+        <PropertyRef Name="StateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Clients">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="hrm_dbModel2StoreContainer">
+    <EntitySet Name="BranchOffices" EntityType="Self.BranchOffices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="state" EntityType="Self.state" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__BranchOff__Clien__534D60F1" Association="Self.FK__BranchOff__Clien__534D60F1">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="BranchOffices" EntitySet="BranchOffices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Districts__State__4E88ABD4" Association="Self.FK__Districts__State__4E88ABD4">
+      <End Role="state" EntitySet="state" />
+      <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_Clients" Association="Self.FK_Employees_Clients">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,458 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+            .card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border-bottom: none;
+            padding: 1rem;
+        }
+
+        .card-body {
+            background: #ffffff;
+            color: #333;
+            padding: 2rem;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        .stretched-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .modal-header {
+            background-color: #343a40;
+            color: white;
+            border-bottom: none;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .btn-custom {
+            background-color: #343a40;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+        }
+
+            .btn-custom:hover {
+                background-color: #23272b;
+                color: white;
+            }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+        }
+
+        .dashboard-title {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .row {
+            justify-content: center;
+        }
+
+        #log {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .log-record {
+            padding: 5px;
+            margin-bottom: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        #log .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .log-content {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 0 0 10px 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+            .log-content .log-record {
+                margin-bottom: 5px;
+                padding: 5px;
+                background-color: #ffffff;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+                .log-content .log-record:hover {
+                    background-color: #f0f0f0;
+                }
+
+        .chart-size {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h2 class="my-4">Dashboard</h2>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card border-primary animate__animated animate__fadeInUp">
+                    <div class="card-header">
+                        Active Employees
+                    </div>
+                    <a href="@Url.Action("Index", "Employees")" class="stretched-link"></a>
+                    <div class="card-body">
+                        <h5 class="card-title">@ViewBag.EmployeeCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card border-primary animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="card-header">
+                        Active Clients
+                    </div>
+                    <a href="@Url.Action("Index", "Clients")" class="stretched-link"></a>
+                    <div class="card-body">
+                        <h5 class="card-title">@ViewBag.ClientCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card border-primary animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="card-header">
+                        Pending UAN Cases
+                    </div>
+                    <div class="card-body" data-toggle="modal" data-target="#pendingUANModal">
+                        <h5 class="card-title">@ViewBag.PendingUANCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card border-primary animate__animated animate__fadeInUp animate__delay-3s">
+                    <div class="card-header">
+                        Pending ESI Cases
+                    </div>
+                    <div class="card-body" data-toggle="modal" data-target="#pendingESIModal">
+                        <h5 class="card-title">@ViewBag.PendingESI</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card border-primary animate__animated animate__fadeInUp animate__delay-4s">
+                    <div class="card-header">
+                        Applicable CLRA Licenses
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@ViewBag.CLRALicenses</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card border-primary animate__animated animate__fadeInUp animate__delay-5s">
+                    <div class="card-header">
+                        Licenses Due in < 90 Days
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@ViewBag.UpcomingLicensesCount</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="pendingESIModal" tabindex="-1" role="dialog" aria-labelledby="pendingESIModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pendingESIModalLabel">Pending ESI Cases</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="pendingESIModalBody">
+                        <!-- Content will be loaded here dynamically -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="pendingUANModal" tabindex="-1" role="dialog" aria-labelledby="pendingUANModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pendingUANModalLabel">Pending UAN Cases</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="pendingUANModalBody">
+                        <!-- Content will be loaded here dynamically -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <!-- Left Column: Employee Log -->
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-primary animate__animated animate__fadeInUp">
+                <div class="card-header bg-primary text-white">
+                    ESI and UAN Cases
+                </div>
+                <div class="card-body">
+                    <canvas id="esiUanChart" class="chart-size"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card border-primary animate__animated animate__fadeInUp">
+                <div class="card-header bg-primary text-white">
+                    Gender and Marital Status
+                </div>
+                <div class="card-body">
+                    <canvas id="genderMaritalChart" class="chart-size" style="width: 100%; height: 200px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div id="log" class="card border-primary animate__animated animate__fadeInUp">
+                <div class="card-header bg-primary text-white">
+                    Employee Log
+                </div>
+                <div class="card-body log-content" style="max-height: 400px; overflow-y: auto;">
+                    @if (ViewBag.LogContent != null)
+                    {
+                        var logRecords = ViewBag.LogContent.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var logRecord in logRecords)
+                        {
+                            <p class="log-record">@Html.Raw(logRecord)</p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#pendingESIModal').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            $.get('@Url.Action("PendingESI", "Dashboard")', function (data) {
+                modal.find('.modal-body').html(data);
+            });
+        });
+
+        $('#pendingUANModal').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            $.get('@Url.Action("PendingUAN", "Dashboard")', function (data) {
+                modal.find('.modal-body').html(data);
+            });
+        });
+    </script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function () {
+            var notificationHub = $.connection.notificationHub;
+
+            // Define client method to handle new employee notifications
+            notificationHub.client.newEmployeeAdded = function (employeeName) {
+                // Update UI to display the new employee notification
+                // For example, add it to a log section on the dashboard
+                $('#log').append('<div>New employee added: ' + employeeName + '</div>');
+            };
+
+            // Start the connection to the SignalR hub
+            $.connection.hub.start().done(function () {
+                console.log('SignalR connected.');
+            }).fail(function (error) {
+                console.error('SignalR connection error: ' + error);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var ctx = document.getElementById('esiUanChart').getContext('2d');
+            var esiUanChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Pending ESI', 'Pending UAN', 'Available ESI', 'Available UAN'],
+                    datasets: [{
+                        data: [
+                            @ViewBag.PendingESI,
+                            @ViewBag.PendingUANCount,
+                            @ViewBag.EmployeeCount - @ViewBag.PendingESI,
+                            @ViewBag.EmployeeCount - @ViewBag.PendingUANCount
+                        ],
+                        backgroundColor: ['#ff6384', '#ff9f40', '#4bc0c0', '#36a2eb'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' cases';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('genderMaritalChart').getContext('2d');
+        var genderMaritalChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Male', 'Female', 'Married', 'Single', 'Divorced', 'Widowed'],
+                datasets: [{
+                    label: 'Count',
+                    data: [
+                        @ViewBag.MaleCount,
+                        @ViewBag.FemaleCount,
+                        @ViewBag.MarriedCount,
+                        @ViewBag.SingleCount,
+                        @ViewBag.DivorcedCount,
+                        @ViewBag.WidowCount
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',   // Red color for males
+                        'rgba(54, 162, 235, 0.5)',   // Blue color for females
+                        'rgba(255, 206, 86, 0.5)',   // Yellow color for married
+                        'rgba(75, 192, 192, 0.5)',   // Green color for single
+                        'rgba(153, 102, 255, 0.5)', // Purple color for divorced
+                        'rgba(255, 159, 64, 0.5)'    // Orange color for widow
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+    </script>
+
+
+
+</body>
+
+</html>

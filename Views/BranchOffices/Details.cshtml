@@ -1,0 +1,74 @@
+﻿@model Cities_States.Models.BranchOffice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BranchOffice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BranchCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BranchCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.District)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.District)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BranchAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BranchAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCLRALicenseApplicable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCLRALicenseApplicable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CLRALicenseExpiry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CLRALicenseExpiry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.ClientName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.BranchID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Cities_States.Models.Client>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Clients</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+<div class="table-responsive">
+    <table id="clientTable" class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.ClientName)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.ClientName)</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ClientID }, new { @class = "btn btn-info btn-sm" }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ClientID }, new { @class = "btn btn-success btn-sm" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ClientID }, new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#clientTable').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true
+            });
+        });
+    </script>
+}
+
