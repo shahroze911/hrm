@@ -53,6 +53,7 @@ public class NominationLetterGenerator2
                 document.ReplaceText("[Date of Birth]", employee.DateOfBirth.ToString("dd MMMM yyyy"));
                 document.ReplaceText("[Gender]", employee.Gender);                
                 document.ReplaceText("[Marital Status]", "SLIC");
+                document.ReplaceText("[Married]", employee.MaritalStatus.ToString());
                 document.ReplaceText("[Account No]", employee.BankAccountNumber);
                 document.ReplaceText("[Name of Supervisor]", "Shahroze Kamran Sahotra");
                 document.ReplaceText("[Address]", employee.Address);

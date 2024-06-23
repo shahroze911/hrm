@@ -31,6 +31,7 @@ public class AppointmentLetterGenerator
                 document.ReplaceText("[Starting Date, Month, Year]", employee.DateOfJoining.ToString("dd MMMM yyyy"));
                 document.ReplaceText("[Mr.]", employee.Gender == "Male" ? "Mr." : "Ms.");
                 document.ReplaceText("[Company name]", "SLIC");
+                document.ReplaceText("[Married]", employee.MaritalStatus.ToString());
                 document.ReplaceText("[Name of Supervisor]", "Shahroze Kamran Sahotra");
                 document.ReplaceText("[Address]", employee.Address);
                 document.ReplaceText("[Supervisor Designation]", "HR");

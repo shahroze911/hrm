@@ -6,27 +6,42 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</p>
-
-<div class="form-group">
-    @Html.Label("Client", htmlAttributes: new { @class = "control-label" })
-    @Html.DropDownList("ClientID", ViewBag.Clients as SelectList, "Select Client", new { @class = "form-control", id = "clientDropdown" })
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col">
+            <p>
+                <a href="@Url.Action("DownloadCompleteClientList", "BranchOffices")" class="btn btn-success mr-2">Download Complete Client List</a>
+                <button id="downloadFilteredClientList" class="btn btn-success">Download Filtered Client List</button>
+            </p>
+        </div>
+        <div class="col">
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="flex-grow-1 mr-2">
+                    @Html.DropDownList("ClientID", ViewBag.Clients as SelectList, "Select Client", new { @class = "form-control", id = "clientDropdown" })
+                </div>
+                <div>
+                    <a href="@Url.Action("Create")" class="btn btn-primary btn-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M7 1.5a.5.5 0 0 1 .5.5V7h5.5a.5.5 0 0 1 0 1H7v5.5a.5.5 0 0 1-1 0V8H.5a.5.5 0 0 1 0-1H6V2a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<p>
-    <a href="@Url.Action("DownloadCompleteClientList", "BranchOffices")" class="btn btn-success">Download Complete Client List</a>
-    <button id="downloadFilteredClientList" class="btn btn-success">Download Filtered Client List</button>
-</p>
 
 <table id="branchTable" class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>Client Name</th>
+            <th>Client ID</th>
             <th>District</th>
-            <th>Branch Address</th>
+            @*<th>Branch Address</th>*@
+            <th>Branch Code</th>
             <th>CLRA License Expiry</th>
+            <th>CLRA License Applicable</th>
             <th>CLRA License Image</th>
             <th>Actions</th>
         </tr>

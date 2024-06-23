@@ -4,13 +4,31 @@
 {
     <tr>
         <td>@Html.DisplayFor(modelItem => item.Client.ClientName)</td>
+        <td>@Html.DisplayFor(modelItem => item.Client.ClientID)</td>
         <td>@Html.DisplayFor(modelItem => item.District)</td>
-        <td>@Html.DisplayFor(modelItem => item.BranchAddress)</td>
+        @*<td>@Html.DisplayFor(modelItem => item.BranchAddress)</td>*@
+        <td>@Html.DisplayFor(modelItem => item.BranchCode)</td>
         <td>@(item.CLRALicenseExpiry.HasValue ? item.CLRALicenseExpiry.Value.ToString("yyyy-MM-dd") : "No expiry date")</td>
+        <td>
+            @if (item.IsCLRALicenseApplicable)
+            {
+                @Html.DisplayFor(modelItem => item.IsCLRALicenseApplicable)
+            }
+            else
+            {
+                @:N/A
+            }
+        </td>
+
+
         <td>
             @if (!string.IsNullOrEmpty(item.CLRALicense))
             {
                 <img src="@Url.Content(item.CLRALicense)" alt="CLRA License" style="max-width: 100px; max-height: 100px;" />
+            }
+            else
+            {
+                @:N/A
             }
         </td>
         <td>

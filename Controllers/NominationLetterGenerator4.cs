@@ -32,11 +32,12 @@ public class NominationLetterGenerator4
                 document.ReplaceText("[Date of Birth]", employee.DateOfBirth.ToString("dd MMMM yyyy"));
                 document.ReplaceText("[Gender]", employee.Gender);                
                 document.ReplaceText("[Marital Status]", "SLIC");
+                document.ReplaceText("[Married]", employee.MaritalStatus.ToString());
                 document.ReplaceText("[Account No]", employee.BankAccountNumber);
                 document.ReplaceText("[IFSC]", employee.IFSC);
                 document.ReplaceText("[UAN]", employee.UAN);
                 document.ReplaceText("[PAN]", employee.PAN);
-                document.ReplaceText("[Aadhar]", employee.PAN);
+                document.ReplaceText("[Aadhar]", employee.Aadhar);
                 document.ReplaceText("[Email]", employee.Email);
                 document.ReplaceText("[Mobile]", employee.MobileNumber);
                 document.ReplaceText("[PF]", employee.PFNumber);

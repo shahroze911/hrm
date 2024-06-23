@@ -99,49 +99,72 @@ namespace Cities_States.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ClientID,BranchCode,StateID,DistrictID,BranchAddress,IsCLRALicenseApplicable,CLRALicenseExpiry")] BranchOffice branchOffice, int? State, int? District, HttpPostedFileBase CLRALicenseUpload)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (State.HasValue)
+                if (ModelState.IsValid)
                 {
-                    var stateName = db.states.Where(s => s.StateID == State.Value).Select(s => s.StateName).FirstOrDefault();
-                    branchOffice.State = stateName;
-                }
-
-                if (District.HasValue)
-                {
-                    var districtName = db.Districts.Where(d => d.DistrictID == District.Value).Select(d => d.DistrictName).FirstOrDefault();
-                    branchOffice.District = districtName;
-                }
-
-                if (CLRALicenseUpload != null && CLRALicenseUpload.ContentLength > 0)
-                {
-                    try
+                    // Check for duplicate branch code for the same client
+                    if (db.BranchOffices.Any(b => b.ClientID == branchOffice.ClientID && b.BranchCode == branchOffice.BranchCode))
                     {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CLRALicenseUpload.FileName);
-                        var filePath = Path.Combine(Server.MapPath("~/Images/"), fileName);
-                        CLRALicenseUpload.SaveAs(filePath);
-                        branchOffice.CLRALicense = "/Images/" + fileName;
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("", "Error saving image: " + ex.Message);
+                        ModelState.AddModelError("BranchCode", "Branch Code already exists for this client.");
+                        ViewBag.ClientID = new SelectList(db.Clients, "ClientID", "ClientName", branchOffice.ClientID);
+                        ViewBag.States = new SelectList(db.states, "StateID", "StateName");
                         return View(branchOffice);
                     }
+
+                    if (State.HasValue)
+                    {
+                        var stateName = db.states.Where(s => s.StateID == State.Value).Select(s => s.StateName).FirstOrDefault();
+                        branchOffice.State = stateName;
+                    }
+
+                    if (District.HasValue)
+                    {
+                        var districtName = db.Districts.Where(d => d.DistrictID == District.Value).Select(d => d.DistrictName).FirstOrDefault();
+                        branchOffice.District = districtName;
+                    }
+
+                    if (branchOffice.IsCLRALicenseApplicable)
+                    {
+                        if (CLRALicenseUpload != null && CLRALicenseUpload.ContentLength > 0)
+                        {
+                            try
+                            {
+                                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CLRALicenseUpload.FileName);
+                                var filePath = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                                CLRALicenseUpload.SaveAs(filePath);
+                                branchOffice.CLRALicense = "/Images/" + fileName;
+                            }
+                            catch (Exception ex)
+                            {
+                                ModelState.AddModelError("", "Error saving image: " + ex.Message);
+                                return View(branchOffice);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        branchOffice.CLRALicense = null;
+                    }
+
+                    db.BranchOffices.Add(branchOffice);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-                var isCLRA = Request.Form["IsCLRALicenseApplicable"];
 
-                // Set IsCLRALicenseApplicable based on the hidden field value
-                branchOffice.IsCLRALicenseApplicable = isCLRA == "true";
-
-                db.BranchOffices.Add(branchOffice);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.ClientID = new SelectList(db.Clients, "ClientID", "ClientName", branchOffice.ClientID);
+                ViewBag.States = new SelectList(db.states, "StateID", "StateName");
+                return View(branchOffice);
             }
-
-            ViewBag.ClientID = new SelectList(db.Clients, "ClientID", "ClientName", branchOffice.ClientID);
-            ViewBag.States = new SelectList(db.states, "StateID", "StateName");
-            return View(branchOffice);
+            catch
+            {
+                ViewBag.CreateBranchError = "An error occurred while adding the branch. Please try again later.";
+                return View(branchOffice);
+            }
+           
         }
+
+
 
         public ActionResult Edit(int? id)
         {
@@ -176,6 +199,15 @@ namespace Cities_States.Controllers
                     return HttpNotFound();
                 }
 
+                if (db.BranchOffices.Any(b => b.ClientID == branchOffice.ClientID && b.BranchCode == branchOffice.BranchCode && b.BranchID != branchOffice.BranchID))
+                {
+                    ModelState.AddModelError("BranchCode", "Branch Code already exists for this client.");
+                    ViewBag.Clients = new SelectList(db.Clients, "ClientID", "ClientName", branchOffice.ClientID);
+                    ViewBag.States = new SelectList(db.states, "StateName", "StateName", branchOffice.State);
+                    ViewBag.Districts = new SelectList(db.Districts.Where(d => d.state.StateName == branchOffice.State), "DistrictName", "DistrictName", branchOffice.District);
+                    return View(branchOffice);
+                }
+
                 if (CLRALicenseUpload != null && CLRALicenseUpload.ContentLength > 0)
                 {
                     try
@@ -184,7 +216,6 @@ namespace Cities_States.Controllers
                         var filePath = Path.Combine(Server.MapPath("~/Images/"), fileName);
                         CLRALicenseUpload.SaveAs(filePath);
                         branchOffice.CLRALicense = "/Images/" + fileName;
-
                     }
                     catch (Exception ex)
                     {
@@ -205,7 +236,6 @@ namespace Cities_States.Controllers
             ViewBag.Clients = new SelectList(db.Clients, "ClientID", "ClientName", branchOffice.ClientID);
             ViewBag.States = new SelectList(db.states, "StateName", "StateName", branchOffice.State);
             ViewBag.Districts = new SelectList(db.Districts.Where(d => d.state.StateName == branchOffice.State), "DistrictName", "DistrictName", branchOffice.District);
-
             return View(branchOffice);
         }
 

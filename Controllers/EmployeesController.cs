@@ -78,7 +78,7 @@ namespace Cities_States.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FullName,FathersName,Designation,DateOfBirth,Gender,PAN,Aadhar,MobileNumber,EmergencyContactNumber,Email,DateOfJoining,UAN,PFNumber,SalaryBelow21K,ESINumber,BankAccountNumber,IFSC,ClientID,BranchCode,DateOfDeployment,MaritalStatus")] Employee employee, int State, int District, HttpPostedFileBase Photograph, string GenerateLetter)
+        public ActionResult Create([Bind(Include = "FullName,FathersName,Designation,DateOfBirth,Gender,PAN,Aadhar,MobileNumber,EmergencyContactNumber,Email,DateOfJoining,UAN,PFNumber,SalaryBelow21K,ESINumber,BankAccountNumber,IFSC,ClientID,BranchCode,DateOfDeployment,MaritalStatus,Address")] Employee employee, int State, int District, HttpPostedFileBase Photograph, string GenerateLetter)
         {
             try
             {
@@ -110,9 +110,9 @@ namespace Cities_States.Controllers
                     // Fetch selected State and District names
                     var stateName = db.states.Where(s => s.StateID == State).Select(s => s.StateName).FirstOrDefault();
                     var districtName = db.Districts.Where(d => d.DistrictID == District).Select(d => d.DistrictName).FirstOrDefault();
-
+                    
                     // Concatenate State and District names and save in Address field
-                    employee.Address = $"{stateName}, {districtName}";
+                    employee.Address = $"{employee.Address} , {stateName} , {districtName}";
 
                     // Add the employee object to the database context
                     db.Employees.Add(employee);
@@ -128,7 +128,7 @@ namespace Cities_States.Controllers
                     if (GenerateLetter == "true")
                     {
                         GenerateAppointmentLetter(employee);
-                        
+
 
                     }
 
@@ -141,15 +141,15 @@ namespace Cities_States.Controllers
                     return View(employee);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewBag.CreateError = "An error occurred while adding the employee. Please try again later.";
                 return View(employee);
             }
-           
+
 
             // If model state is not valid, repopulate ViewBag and return the view with errors
-           
+
         }
 
         private void LogEmployeeAddition(string employeeName)
@@ -217,12 +217,12 @@ namespace Cities_States.Controllers
 
                 return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
                 return View(employee);
             }
-            
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -273,12 +273,13 @@ namespace Cities_States.Controllers
 
                 return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
                 return View(employee);
             }
 
-            
+
         }
 
         [HttpPost]
@@ -298,46 +299,46 @@ namespace Cities_States.Controllers
             foreach (var employee in selectedEmployees)
             {
                 GenerateNominationLetter(employee);
-                
+
 
             }
 
             TempData["SuccessMessage"] = "Nomination letters generated successfully.";
             return RedirectToAction("Index");
         }
-       
-    public ActionResult GenerateNominationLetter1(Employee employee)
+
+        public ActionResult GenerateNominationLetter1(Employee employee)
         {
             try
             {
-            if (employee == null)
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
+
+                NominationLetterGenerator1 generator = new NominationLetterGenerator1();
+                string outputPath = generator.GenerateNominationLetter(employee);
+
+                if (outputPath != null)
+                {
+                    string fileName = "NominationLetterEPF_" + employee.FullName + ".docx";
+                    generator.ServeGeneratedLetter(outputPath, fileName);
+                }
+                else
+                {
+                    // Handle generation failure (optional)
+                    return new HttpStatusCodeResult(500, "Error generating appointment letter");
+                }
+
+                return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
+            }
+            catch (Exception e)
             {
-                return HttpNotFound();
+                ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
+                return View(employee);
             }
 
-            NominationLetterGenerator1 generator = new NominationLetterGenerator1();
-            string outputPath = generator.GenerateNominationLetter(employee);
 
-            if (outputPath != null)
-            {
-                string fileName = "NominationLetterEPF_" + employee.FullName + ".docx";
-                generator.ServeGeneratedLetter(outputPath, fileName);
-            }
-            else
-            {
-                // Handle generation failure (optional)
-                return new HttpStatusCodeResult(500, "Error generating appointment letter");
-            }
-
-            return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
-        }
-            catch(Exception e)
-            {
-            ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
-            return View(employee);
-        }
-
-           
         }
 
         [HttpPost]
@@ -368,33 +369,33 @@ namespace Cities_States.Controllers
         {
             try
             {
-if (employee == null)
-            {
-                return HttpNotFound();
-            }
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
 
-            NominationLetterGenerator2 generator = new NominationLetterGenerator2();
-            string outputPath = generator.GenerateNominationLetter(employee);
+                NominationLetterGenerator2 generator = new NominationLetterGenerator2();
+                string outputPath = generator.GenerateNominationLetter(employee);
 
-            if (outputPath != null)
-            {
-                string fileName = "NominationLetterCEPGAFF_" + employee.FullName + ".docx";
-                generator.ServeGeneratedLetter(outputPath, fileName);
-            }
-            else
-            {
-                // Handle generation failure (optional)
-                return new HttpStatusCodeResult(500, "Error generating appointment letter");
-            }
+                if (outputPath != null)
+                {
+                    string fileName = "NominationLetterCEPGAFF_" + employee.FullName + ".docx";
+                    generator.ServeGeneratedLetter(outputPath, fileName);
+                }
+                else
+                {
+                    // Handle generation failure (optional)
+                    return new HttpStatusCodeResult(500, "Error generating appointment letter");
+                }
 
-            return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
+                return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
             }
             catch (Exception e)
             {
-ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
+                ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
                 return View(employee);
             }
-            
+
         }
 
         [HttpPost]
@@ -426,34 +427,34 @@ ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please
         {
             try
             {
-if (employee == null)
-            {
-                return HttpNotFound();
-            }
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
 
-            NominationLetterGenerator3 generator = new NominationLetterGenerator3();
-            string outputPath = generator.GenerateNominationLetter(employee);
+                NominationLetterGenerator3 generator = new NominationLetterGenerator3();
+                string outputPath = generator.GenerateNominationLetter(employee);
 
-            if (outputPath != null)
-            {
+                if (outputPath != null)
+                {
 
-                string fileName = "NominationLetter_PF_FORM_" + employee.FullName + ".docx";
-                generator.ServeGeneratedLetter(outputPath, fileName);
-            }
-            else
-            {
-                // Handle generation failure (optional)
-                return new HttpStatusCodeResult(500, "Error generating appointment letter");
-            }
+                    string fileName = "NominationLetter_PF_FORM_" + employee.FullName + ".docx";
+                    generator.ServeGeneratedLetter(outputPath, fileName);
+                }
+                else
+                {
+                    // Handle generation failure (optional)
+                    return new HttpStatusCodeResult(500, "Error generating appointment letter");
+                }
 
-            return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
+                return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
             }
             catch (Exception e)
             {
                 ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
                 return View(employee);
             }
-            
+
         }
 
         [HttpPost]
@@ -485,34 +486,34 @@ if (employee == null)
         {
             try
             {
- if (employee == null)
-            {
-                return HttpNotFound();
-            }
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
 
-            NominationLetterGenerator4 generator = new NominationLetterGenerator4();
-            string outputPath = generator.GenerateNominationLetter(employee);
+                NominationLetterGenerator4 generator = new NominationLetterGenerator4();
+                string outputPath = generator.GenerateNominationLetter(employee);
 
-            if (outputPath != null)
-            {
+                if (outputPath != null)
+                {
 
-                string fileName = "NominationLetter_ESIC2_" + employee.FullName + ".docx";
-                generator.ServeGeneratedLetter(outputPath, fileName);
-            }
-            else
-            {
-                // Handle generation failure (optional)
-                return new HttpStatusCodeResult(500, "Error generating appointment letter");
-            }
+                    string fileName = "NominationLetter_ESIC2_" + employee.FullName + ".docx";
+                    generator.ServeGeneratedLetter(outputPath, fileName);
+                }
+                else
+                {
+                    // Handle generation failure (optional)
+                    return new HttpStatusCodeResult(500, "Error generating appointment letter");
+                }
 
-            return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
+                return new EmptyResult(); // This line may never be reached because ServeGeneratedLetter ends the response
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewBag.ErrorMessage1 = "An error occurred while downloading  the letter. Please try again later.";
                 return View(employee);
             }
-           
+
         }
 
         [HttpPost]
@@ -621,7 +622,7 @@ if (employee == null)
             }
         }
 
-       
+
 
 
 
@@ -844,4 +845,5 @@ if (employee == null)
         }
     }
 }
+
 

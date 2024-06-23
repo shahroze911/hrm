@@ -41,15 +41,19 @@ namespace Cities_States.Controllers
             return View();
         }
 
-        // POST: Clients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ClientID,ClientName")] Client client)
         {
             if (ModelState.IsValid)
             {
+                // Check for duplicate client name
+                if (db.Clients.Any(c => c.ClientName == client.ClientName))
+                {
+                    ModelState.AddModelError("ClientName", "A client with this name already exists.");
+                    return View(client);
+                }
+
                 db.Clients.Add(client);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -73,15 +77,19 @@ namespace Cities_States.Controllers
             return View(client);
         }
 
-        // POST: Clients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ClientID,ClientName")] Client client)
         {
             if (ModelState.IsValid)
             {
+                // Check for duplicate client name
+                if (db.Clients.Any(c => c.ClientID != client.ClientID && c.ClientName == client.ClientName))
+                {
+                    ModelState.AddModelError("ClientName", "A client with this name already exists.");
+                    return View(client);
+                }
+
                 db.Entry(client).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

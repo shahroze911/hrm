@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMZZ2urO5e6r6rmvI3OG+dHJ1iNSC1TAdf5ATz5" crossorigin="anonymous">
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <style>
         /* Custom styles for the form */
         body {
@@ -83,25 +85,30 @@
 <body>
 
     <div class="container mt-1">
-        <h2 class="text-center mb-1">Create Employee</h2>
+        <div class="card-header" style="position: relative;">
+            <a href="@Url.Action("Index")" class="btn btn-back" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);">
+                <i class="material-icons">arrow_back</i>
+            </a>
+            <h2 class="card-title" style="color: #007bff; font-weight: bold; margin-bottom: 20px; text-align: center;">Create New Employee</h2>
+        </div>
 
         @using (Html.BeginForm("Create", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
+    <div class="form-horizontal">
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.EmployeeID)
-
-                @*<div class="form-group row">
-                        @Html.LabelFor(model => model.EmployeeID, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" value="@Model.EmployeeID" readonly />
-                        </div>
-                    </div>*@
-
-
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.EmployeeID)
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-personal-info-tab" data-toggle="tab" href="#nav-personal-info" role="tab" aria-controls="nav-personal-info" aria-selected="true">Personal Information</a>
+                <a class="nav-item nav-link" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details" aria-selected="false">Details</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-personal-info" role="tabpanel" aria-labelledby="nav-personal-info-tab">
+                <p></p>
                 <div class="form-group row">
                     @Html.LabelFor(model => model.FullName, "Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -117,9 +124,30 @@
                         @Html.ValidationMessageFor(model => model.FathersName, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.DateOfBirth, "Date of Birth", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" />
+                        @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                        <span id="ageValidation" class="text-danger" style="display: none;">Age must be at least 18 years old.</span>
+                    </div>
 
+                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.Gender, "Male", new { @class = "form-check-input", id = "genderMale" })
+                            @Html.Label("genderMale", "Male", new { @class = "form-check-label" })
+                        </div>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.Gender, "Female", new { @class = "form-check-input", id = "genderFemale" })
+                            @Html.Label("genderFemale", "Female", new { @class = "form-check-label" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                 <div class="form-group row">
                     @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2" })
+
                     <div class="col-md-10">
                         <select id="Designation" name="Designation" class="form-control">
                             <option value="">Select Designation</option>
@@ -132,9 +160,9 @@
                         @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group row">
                     @Html.LabelFor(model => model.MaritalStatus, "Marital Status", htmlAttributes: new { @class = "control-label col-md-2" })
+
                     <div class="col-md-10">
                         <select id="MaritalStatus" name="MaritalStatus" class="form-control">
                             <option value="">Select Marital Status</option>
@@ -148,49 +176,7 @@
                 </div>
 
 
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.DateOfBirth, "Date of Birth", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" />
-                        @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
-                        <span id="ageValidation" class="text-danger" style="display: none;">Age must be at least 18 years old.</span>
-                    </div>
-                </div>
 
-
-
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="radio-inline">
-                            @Html.RadioButtonFor(model => model.Gender, "Male", new { htmlAttributes = new { @class = "form-control" } }) Male
-                        </label>
-                        <label class="radio-inline">
-                            @Html.RadioButtonFor(model => model.Gender, "Female", new { htmlAttributes = new { @class = "form-control" } }) Female
-                        </label>
-                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.PAN, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.PAN, new { htmlAttributes = new { @class = "form-control", pattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}" } })
-                        <span class="text-muted">Format: ABCDE1234F</span>
-                        @Html.ValidationMessageFor(model => model.PAN, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.Aadhar, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Aadhar, new { htmlAttributes = new { @class = "form-control", pattern = "[0-9]{12}", required = "required" } })
-                        <span class="text-muted">Format: 123456789012</span>
-                        @Html.ValidationMessageFor(model => model.Aadhar, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
                 <div class="form-group row">
                     @Html.LabelFor(model => model.MobileNumber, "Mobile Number", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -205,46 +191,82 @@
                         <span class="text-danger" id="mobileNumberError"></span>
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.EmergencyContactNumber, "Emergency Contact Number", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">+91</span>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.EmergencyContactNumber, "Emergency Contact Number", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">+91</span>
+                                </div>
+                                @Html.EditorFor(model => model.EmergencyContactNumber, new { htmlAttributes = new { @class = "form-control", pattern = "[0-9]{10}", oninput = "validateEmergencyContactNumber(this)", placeholder = "Format: 1234567890" } })
                             </div>
-                            @Html.EditorFor(model => model.EmergencyContactNumber, new { htmlAttributes = new { @class = "form-control", pattern = "[0-9]{10}", oninput = "validateEmergencyContactNumber(this)", placeholder = "Format: 1234567890" } })
+                            <span class="text-danger" id="emergencyContactNumberError"></span>
                         </div>
-                        <span class="text-danger" id="emergencyContactNumberError"></span>
                     </div>
-                </div>
 
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.Label("State", "State", new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.DropDownList("State", ViewBag.States as SelectList, "Select State", new { @id = "state", @class = "form-control" })
+                        </div>
+                        @Html.Label("District", "District", new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.DropDownList("District", new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "Select District", new { @id = "district", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Address, "Address", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="nextButton">Next</button>
+
+                </div>
+            <div class="tab-pane fade" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab">
+                <p></p>
                 <div class="form-group row">
-                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.DateOfJoining, "Date of Joining", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row">
-                    @Html.Label("State", "State", new { @class = "control-label col-md-2" })
-                    <div class="col-md-4">
-                        @Html.DropDownList("State", ViewBag.States as SelectList, "Select State", new { @id = "state", @class = "form-control" })
-                    </div>
-                    @Html.Label("District", "District", new { @class = "control-label col-md-2" })
-                    <div class="col-md-4">
-                        @Html.DropDownList("District", new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "Select District", new { @id = "district", @class = "form-control" })
-                    </div>
-                </div>
 
-
-
-
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.DateOfJoining, "Date of joining", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
                         <input type="date" id="DateOfJoining" name="DateOfJoining" class="form-control" />
                         @Html.ValidationMessageFor(model => model.DateOfJoining, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.DateOfDeployment, "Date of Deployment", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        @Html.EditorFor(model => model.DateOfDeployment, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.DateOfDeployment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.PAN, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PAN, new { htmlAttributes = new { @class = "form-control", pattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}" } })
+                        <span class="text-muted">Format: ABCDE1234F</span>
+                        @Html.ValidationMessageFor(model => model.PAN, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Aadhar, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Aadhar, new { htmlAttributes = new { @class = "form-control", pattern = "[0-9]{12}", required = "required" } })
+                        <span class="text-muted">Format: 123456789012</span>
+                        @Html.ValidationMessageFor(model => model.Aadhar, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -306,11 +328,12 @@
                 <div class="form-group row">
                     @Html.LabelFor(model => model.ClientID, "Client", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("ClientID", (SelectList)ViewBag.ClientID, htmlAttributes: new { @class = "form-control", @id = "ClientID" })
+                        @Html.DropDownList("ClientID", (SelectList)ViewBag.ClientID, "Select Client", htmlAttributes: new { @class = "form-control", @id = "ClientID" })
                         @Html.ValidationMessageFor(model => model.ClientID, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+                <!-- Branch Code Dropdown -->
                 <div class="form-group row">
                     @Html.LabelFor(model => model.BranchCode, "Branch Code", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -318,16 +341,6 @@
                         @Html.ValidationMessageFor(model => model.BranchCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.DateOfDeployment, "Date of Deployment", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.DateOfDeployment, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                        @Html.ValidationMessageFor(model => model.DateOfDeployment, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
                 <div class="form-group row">
                     @Html.Label("Photograph", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -338,22 +351,20 @@
 
 
                 <div class="form-group row">
-                    <div class="col-md-10 offset-md-2">
-                        <input type="submit" value="Create" class="btn btn-primary" id="submitButton" />
+                    <div class="col-md-10 offset-md-2 d-flex justify-content-start">
+                        <button type="button" class="btn btn-secondary" id="previousButton">Previous</button>
+                        <input type="submit" value="Create" class="btn btn-primary ml-2" id="submitButton" />
                     </div>
                 </div>
+
+
             </div>
             <input type="hidden" id="generateLetter" name="GenerateLetter" value="false" />
-        }
 
-        <div class="text-left mt-3">
-            <a href="@Url.Action("Index", "Employees")" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back
-            </a>
         </div>
     </div>
-
-
+        }
+    </div>
 </body>
 
 </html>
@@ -515,23 +526,64 @@
     });
 </script>
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
     <script>
-        $(document).ready(function () {
-            $('#ClientID').change(function () {
-                var clientId = $(this).val();
+    $(document).ready(function () {
+        function loadBranchCodes(clientId) {
+            if (clientId) {
                 $.ajax({
                     url: '@Url.Action("GetBranchCodes", "Employees")',
                     type: 'GET',
                     data: { clientId: clientId },
                     success: function (data) {
-                        $('#BranchCode').val(data);
+                        var branchCodeDropdown = $('#BranchCode');
+                        branchCodeDropdown.empty();
+                        branchCodeDropdown.append($('<option>').text('Select Branch Code').attr('value', ''));
+                        $.each(data, function (index, branchCode) {
+                            branchCodeDropdown.append($('<option/>', {
+                                value: branchCode.Value,
+                                text: branchCode.Text
+                            }));
+                        });
                     },
                     error: function () {
                         alert('Error fetching branch codes.');
                     }
                 });
-            });
+            } else {
+                // Clear branch codes dropdown if "Select Client" is chosen
+                $('#BranchCode').empty();
+                $('#BranchCode').append($('<option>').text('Select Branch Code').attr('value', ''));
+            }
+        }
+
+        $('#ClientID').change(function () {
+            var clientId = $(this).val();
+            loadBranchCodes(clientId);
         });
+
+        // Trigger change event if ClientID has a value to load BranchCodes on page load
+        var selectedClientId = $('#ClientID').val();
+        if (selectedClientId) {
+            loadBranchCodes(selectedClientId);
+        }
+
+        // Check if branch code is selected when client is selected
+        $('#ClientID').change(function () {
+            if ($(this).val() && $('#BranchCode').val() === '') {
+                alert('Please select a Branch Code.');
+            }
+        });
+
+        // Ensure BranchCode is selected when form is submitted
+        $('form').submit(function () {
+            if ($('#ClientID').val() && $('#BranchCode').val() === '') {
+                alert('Please select a Branch Code.');
+                return false; // Prevent form submission
+            }
+        });
+    });
     </script>
     <script>
         $(document).ready(function () {
@@ -557,6 +609,41 @@
                     $("#district").empty().append('<option value="">Select District</option>');
                 }
             });
+            $('#nextButton').click(function () {
+                $('#nav-personal-info-tab').removeClass('active');
+                $('#nav-personal-info').removeClass('show active');
+                $('#nav-details-tab').addClass('active');
+                $('#nav-details').addClass('show active');
+            });
+
+            $('#previousButton').click(function () {
+                $('#nav-details-tab').removeClass('active');
+                $('#nav-details').removeClass('show active');
+                $('#nav-personal-info-tab').addClass('active');
+                $('#nav-personal-info').addClass('show active');
+            });
+            $('#nextButton').click(function () {
+                $('#nav-details-tab').tab('show');
+            });
+
+            $('#previousButton').click(function () {
+                $('#nav-personal-info-tab').tab('show');
+            });
+            $('#nav-personal-info-tab').click(function () {
+                $('#nav-details-tab').removeClass('active');
+                $('#nav-details').removeClass('show active');
+                $('#nav-personal-info-tab').addClass('active');
+                $('#nav-personal-info').addClass('show active');
+            });
+
+            $('#nav-details-tab').click(function () {
+                $('#nav-personal-info-tab').removeClass('active');
+                $('#nav-personal-info').removeClass('show active');
+                $('#nav-details-tab').addClass('active');
+                $('#nav-details').addClass('show active');
+            });
+            
+
         });
 
     </script>
@@ -579,29 +666,29 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function () {
-            $('#ClientID').change(function () {
-                var clientId = $(this).val();
-                $.ajax({
-                    url: '@Url.Action("GetBranchCodes", "Employees")',
-                    type: 'GET',
-                    data: { clientId: clientId },
-                    success: function (data) {
-                        var branchCodeDropdown = $('#BranchCode');
-                        branchCodeDropdown.empty();
-                        $.each(data, function (index, branchCode) {
-                            branchCodeDropdown.append($('<option/>', {
-                                value: branchCode.Value,
-                                text: branchCode.Text
-                            }));
-                        });
-                    },
-                    error: function () {
-                        alert('Error fetching branch codes.');
-                    }
+    @*<script>
+            $(document).ready(function () {
+                $('#ClientID').change(function () {
+                    var clientId = $(this).val();
+                    $.ajax({
+                        url: '@Url.Action("GetBranchCodes", "Employees")',
+                        type: 'GET',
+                        data: { clientId: clientId },
+                        success: function (data) {
+                            var branchCodeDropdown = $('#BranchCode');
+                            branchCodeDropdown.empty();
+                            $.each(data, function (index, branchCode) {
+                                branchCodeDropdown.append($('<option/>', {
+                                    value: branchCode.Value,
+                                    text: branchCode.Text
+                                }));
+                            });
+                        },
+                        error: function () {
+                            alert('Error fetching branch codes.');
+                        }
+                    });
                 });
             });
-        });
-    </script>
+        </script>*@
 }

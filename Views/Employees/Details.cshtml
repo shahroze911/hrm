@@ -4,66 +4,115 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 <style>
+    .print-border {
+        border: 1px solid #000;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .print-table th,
+    .print-table td {
+        border: 1px solid #000;
+        padding: 8px;
+    }
+
     .card {
-    margin: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation-duration: 0.5s;
-}
+        margin: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        animation-duration: 0.5s;
+    }
 
-.card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-}
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
 
-.card-title {
-    margin-bottom: 0;
-}
+    .card-title {
+        margin-bottom: 0;
+    }
 
-.card-body {
-    patding: 20px;
-}
+    .card-body {
+        padding: 20px;
+    }
 
-.card-footer {
-    background-color: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-    patding: 10px 20px;
-}
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        padding: 10px 20px;
+    }
 
-/* Animation classes */
-.animated {
-    animation-fill-mode: both;
-}
-
-
-.fadeInUp {
-    animation-name: fadeInUp;
-}
+    /* Animation classes */
+    .animated {
+        animation-fill-mode: both;
+    }
 
 
+    .fadeInUp {
+        animation-name: fadeInUp;
+    }
+
+    .card-body .position-relative {
+        padding-top: 150px; /* Adjust as needed to create space for the photograph */
+    }
+
+    .card-body .text-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .btn-back {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #6c757d; /* Gray color for back button */
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-back:hover {
+            background-color: #495057; /* Darker gray on hover */
+        }
+
+    .btn-back {
+        background-color: #6c757d;
+        margin-left: 10px;
+    }
+
+        .btn-back:hover {
+            background-color: #495057;
+        }
 </style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div class="card animated fadeInUp">
-    <div class="card-header">
-        <h4 class="card-title">Employee Details</h4>
-    </div>
-    <div class="card-body">
+    <div class="card-header" style="position: relative;">
+    <a href="@Url.Action("Index")" class="btn btn-back" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);">
+        <i class="material-icons">arrow_back</i>
+    </a>        
+    <h2 class="card-title" style="color: #007bff; font-weight: bold; margin-bottom: 20px; text-align: center;">Employee Details</h2>
+</div>
+
+    <div class="card-body position-relative">
+        
+        <div class="text-right mb-3">
+            <img src="@Model.Photograph" alt="Employee Photograph" class="employee-photo" style="max-width: 300px; max-height: 300px;" />
+        </div>
         <table class="table">
-
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FullName)
-                </th>
-
-                <td>
-                    @Html.DisplayFor(model => model.FullName)
-                </td>
+                <th>Full Name</th>
+                <td>@Html.DisplayFor(model => model.FullName)</td>
             </tr>
-            
+
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.FathersName)
+                    Father Name
                 </th>
 
                 <td>
@@ -83,14 +132,14 @@
 
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                    Date of Birth
                 </th>
 
                 <td>
                     @Html.DisplayFor(model => model.DateOfBirth)
                 </td>
             </tr>
-            
+
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Gender)
@@ -100,7 +149,7 @@
                     @Html.DisplayFor(model => model.Gender)
                 </td>
             </tr>
-            
+
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.PAN)
@@ -110,7 +159,7 @@
                     @Html.DisplayFor(model => model.PAN)
                 </td>
             </tr>
-            
+
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Aadhar)
@@ -122,19 +171,19 @@
             </tr>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.MobileNumber)
+                    Mobile Number
                 </th>
                 <td>
                     @Html.DisplayFor(model => model.MobileNumber)
                 </td>
             </tr>
 
-            
+
             <tr>
 
 
                 <th>
-                    @Html.DisplayNameFor(model => model.EmergencyContactNumber)
+                    Emergency Contact Number
                 </th>
                 <td>
                     @Html.DisplayFor(model => model.EmergencyContactNumber)
@@ -149,10 +198,6 @@
                 <td>
                     @Html.DisplayFor(model => model.Email)
                 </td>
-            </tr>
-
-            <tr>
-
 
                 <th>
                     @Html.DisplayNameFor(model => model.Address)
@@ -161,16 +206,22 @@
                     @Html.DisplayFor(model => model.Address)
                 </td>
             </tr>
-
-            
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.DateOfJoining)
+                    Date of Joining
                 </th>
                 <td>
                     @Html.DisplayFor(model => model.DateOfJoining)
                 </td>
-            </tr>                       
+
+                <th>
+                    Date of Deployment
+                </th>
+
+                <td>
+                    Date of Deployment
+                </td>
+            </tr>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.UAN)
@@ -179,16 +230,15 @@
                 <td>
                     @Html.DisplayFor(model => model.UAN)
                 </td>
-            </tr>
-            <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.PFNumber)
+                    PF Number
                 </th>
 
                 <td>
                     @Html.DisplayFor(model => model.PFNumber)
                 </td>
             </tr>
+            
 
             <tr>
                 <th>
@@ -198,30 +248,27 @@
                 <td>
                     @Html.DisplayFor(model => model.SalaryBelow21K)
                 </td>
-            </tr>
 
-            
-            <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.ESINumber)
+                    ESI Number
                 </th>
 
                 <td>
                     @Html.DisplayFor(model => model.ESINumber)
                 </td>
             </tr>
-            
+
+
+
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.BankAccountNumber)
+                    Bank Account Number
                 </th>
 
                 <td>
                     @Html.DisplayFor(model => model.BankAccountNumber)
                 </td>
-            </tr>
-            
-            <tr>
+
                 <th>
                     @Html.DisplayNameFor(model => model.IFSC)
                 </th>
@@ -230,52 +277,65 @@
                     @Html.DisplayFor(model => model.IFSC)
                 </td>
             </tr>
-            
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.BranchCode)
-                </th>
 
-                <td>
-                    @Html.DisplayFor(model => model.BranchCode)
-                </td>
-            </tr>
             
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.DateOfDeployment)
-                </th>
-
-                <td>
-                    @Html.DisplayFor(model => model.DateOfDeployment)
-                </td>
-            </tr>
-            
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Photograph)
-                </th>                
-                <td><img src="@Model.Photograph" alt="Employee Photograph" class="employee-photo" style="max-withh: 200px;" /></td>
-            </tr>
-            
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Client.ClientName)
+                    Client Name
                 </th>
 
                 <td>
                     @Html.DisplayFor(model => model.Client.ClientName)
                 </td>
-            </tr>
-            
 
+                <th>
+                    Branch Code
+                </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.BranchCode)
+                </td>
+            </tr>            
+
+            <tr>
+                
+            </tr>
         </table>
     </div>
 
     <div class="card-footer">
-        <p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }, new { @class = "btn btn-primary" }) |
-            @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-secondary" })
-        </p>
+        <div class="row">
+            <div class="col">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }, new { @class = "btn btn-primary btn-block" })
+            </div>
+            <div class="col">
+                <button onclick="printEmployeeDetails()" class="btn btn-secondary btn-block">Print Details</button>
+            </div>
+            <div class="col">
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-block" })
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    function printEmployeeDetails() {
+        // Get the HTML content of the card body
+        var employeeDetails = document.querySelector('.card-body').innerHTML;
+
+        // Open a new window
+        var printWindow = window.open('', '_blank');
+
+        // Write the HTML content to the new window
+        printWindow.document.write('<html><head><title>Employee Details</title></head><body>');
+        printWindow.document.write(employeeDetails);
+        printWindow.document.write('</body></html>');
+
+        // Close the document
+        printWindow.document.close();
+
+        // Print the window
+        printWindow.print();
+    }
+</script>
+
